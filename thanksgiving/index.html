@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Six little leaves, six reasons to say thank you. A warm Thanksgiving surprise made just for you.">
+<meta name="theme-color" content="#2A1220">
+<link rel="canonical" href="https://rwk67m9tzg-afk.github.io/greeting-links/thanksgiving/">
+<link rel="icon" type="image/svg+xml" href="/greeting-links/thanksgiving/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A Little Thanksgiving Surprise">
+<meta property="og:description" content="Six little leaves, six reasons to say thank you. Open your Thanksgiving surprise.">
+<meta property="og:url" content="https://rwk67m9tzg-afk.github.io/greeting-links/thanksgiving/">
+<meta property="og:image" content="https://rwk67m9tzg-afk.github.io/greeting-links/thanksgiving/og-thanksgiving.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Golden autumn leaves on a deep plum background">
+<meta name="twitter:card" content="summary_large_image">
+<title>Thankful Leaves</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=DM+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: deep plum autumn dusk; one column with a countdown chip, six tappable leaves that each reveal a reason to be thankful. Single dark look by choice. */
+:root{
+  --bg:#2A1220; --bg2:#4A1F2E; --ink:#FBEFD9; --muted:#D9B9A8; --amber:#F2A541; --rust:#D4562B; --gold:#F6D06F; --moss:#8FA55A;
+  --display:'Young Serif',Georgia,serif; --body:'DM Sans',system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:linear-gradient(180deg,var(--bg2),var(--bg) 70%) fixed,var(--bg);color:var(--ink);font:400 16px/1.5 var(--body);padding-block:32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+#fall{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+main{position:relative;z-index:1;max-width:520px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center}
+.chip{margin:0;display:inline-block;border:1px solid rgba(242,165,65,.55);border-radius:999px;padding:6px 16px;font-size:13px;letter-spacing:.06em;color:var(--amber);font-weight:500}
+.eyebrow{margin:0;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{margin:0;font:400 clamp(34px,9.5vw,50px)/1.08 var(--display);text-wrap:balance}
+.sub{margin:0;color:var(--muted)}
+.leaves{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.leaf{appearance:none;border:1px solid rgba(251,239,217,.18);background:rgba(251,239,217,.06);border-radius:14px;padding:12px 6px 10px;min-height:110px;cursor:pointer;color:var(--ink);font:500 13px var(--body);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transition:transform .2s,background .2s}
+.leaf:hover{transform:translateY(-3px) rotate(-2deg)}
+.leaf svg{width:54px;height:54px;transition:transform .5s}
+.leaf.found{background:rgba(242,165,65,.14);border-color:rgba(242,165,65,.5)}
+.leaf.found svg{transform:rotate(18deg) scale(.88)}
+.leaf:focus-visible,.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.note{width:100%;min-height:150px;border-radius:10px;background:var(--ink);color:#2A1220;padding:22px 20px;display:flex;flex-direction:column;justify-content:center;gap:8px;box-shadow:0 12px 26px rgba(0,0,0,.4)}
+.note p{margin:0}
+.note .big{font:400 clamp(21px,6vw,26px)/1.3 var(--display);text-wrap:pretty}
+.note .tag{font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:#9A3B1C}
+.note.pop{animation:pop .45s cubic-bezier(.2,1.5,.4,1)}
+@keyframes pop{from{transform:scale(.85) rotate(-2deg);opacity:0}to{transform:none;opacity:1}}
+.progress{margin:0;font-size:14px;color:var(--muted)}
+.btn{appearance:none;border:0;background:var(--amber);color:#2A1220;font:600 15px var(--body);padding:13px 24px;border-radius:999px;min-height:48px;cursor:pointer}
+.finale{display:none;width:100%;border:1px solid rgba(242,165,65,.6);border-radius:12px;padding:20px;background:rgba(242,165,65,.1)}
+.finale.on{display:block;animation:pop .6s}
+.finale p{margin:0}
+.finale .big{font:400 clamp(24px,7vw,32px)/1.2 var(--display);color:var(--gold)}
+@media(prefers-reduced-motion:reduce){.leaf,.leaf svg{transition:none}.leaf:hover{transform:none}.note.pop,.finale.on{animation:none}}
+</style>
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+
+<canvas id="fall" aria-hidden="true"></canvas>
+<main>
+  <p class="chip" id="chip">Thanksgiving is Nov 26</p>
+  <p class="eyebrow">A little thank you</p>
+  <h1 id="title">Thankful for you, friend</h1>
+  <p class="sub">Tap each leaf to find out why.</p>
+
+  <div class="leaves" id="leaves" role="group" aria-label="Six reasons to be thankful"></div>
+
+  <section class="note" id="note" aria-live="polite">
+    <p class="tag" id="tag">Pick a leaf</p>
+    <p class="big" id="msg">Six leaves are waiting for you.</p>
+  </section>
+  <p class="progress" id="prog" aria-live="polite">0 of 6 found</p>
+
+  <div class="finale" id="finale">
+    <p class="big" id="fin">Happy Thanksgiving, friend!</p>
+    <p id="finfrom" hidden></p>
+  </div>
+
+  <button class="btn" id="reset" type="button">Start over</button>
+
+</main>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var calm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cols=['#F2A541','#D4562B','#F6D06F','#8FA55A','#B8432A','#E8873A'];
+  var notes=[
+    ['Your kitchen','{to}, nothing tastes like the food you make, and nothing feels like home the way your kitchen does.'],
+    ['Always there','Thank you for picking up every time I call, even when it is late.'],
+    ['Your laugh','The whole table gets better when {to} starts laughing.'],
+    ['Little things','You remember the small details that no one else notices. That means a lot.'],
+    ['Tough days','On my hardest days, you showed up without being asked.'],
+    ['Just you','I am thankful for you, {to}. Plain and simple.']
+  ];
+  var found={},count=0,complete=false,names={to:'friend',from:''};
+  var storageKey='greeting-links:thanksgiving:names:v1';
+  function clean(value,max){return String(value||'').replace(/[\u0000-\u001F\u007F-\u009F]/g,'').trim().slice(0,max)}
+  function loadNames(){
+    var params=new URLSearchParams(window.location.search);
+    if(params.has('to')||params.has('from')){
+      names.to=clean(params.get('to'),24)||'friend';
+      names.from=clean(params.get('from'),24);
+      try{localStorage.setItem(storageKey,JSON.stringify(names))}catch(e){}
+    }else{
+      try{
+        var saved=JSON.parse(localStorage.getItem(storageKey)||'null');
+        if(saved&&typeof saved==='object'){
+          names.to=clean(saved.to,24)||'friend';
+          names.from=clean(saved.from,24);
+        }
+      }catch(e){}
+    }
+    $('title').textContent='Thankful for you, '+names.to;
+    $('fin').textContent='Happy Thanksgiving, '+names.to+'!';
+    $('finfrom').textContent=names.from?'With love, '+names.from:'';
+    $('finfrom').hidden=!names.from;
+    document.title='Thankful for you, '+names.to+' | Thankful Leaves';
+  }
+  loadNames();
+  function leafSvg(c,r){
+    return '<svg viewBox="0 0 64 64" aria-hidden="true" style="transform:rotate('+r+'deg)"><path d="M32 4C48 14 56 30 44 46 40 51 36 54 32 60 28 54 24 51 20 46 8 30 16 14 32 4Z" fill="'+c+'"/><path d="M32 12V60M32 28L22 22M32 36L42 30M32 44L24 40" stroke="rgba(42,18,32,.45)" stroke-width="2" fill="none" stroke-linecap="round"/></svg>';
+  }
+  var wrap=$('leaves');
+  notes.forEach(function(n,k){
+    var b=document.createElement('button');b.type='button';b.className='leaf';b.id='leaf'+k;
+    b.innerHTML=leafSvg(cols[k%cols.length],[-14,10,-6,16,-20,6][k])+'<span>'+n[0]+'</span>';
+    b.addEventListener('click',function(){pick(k,b);});
+    wrap.appendChild(b);
+  });
+  function fmt(s){return s.replace(/\{to\}/g,names.to)}
+  function pick(k,b){
+    var nt=$('note');
+    $('tag').textContent=notes[k][0];$('msg').textContent=fmt(notes[k][1]);
+    nt.classList.remove('pop');void nt.offsetWidth;nt.classList.add('pop');
+    if(!found[k]){found[k]=true;count++;b.classList.add('found');}
+    $('prog').textContent=count+' of 6 found';
+    burst(b.getBoundingClientRect());
+    if(count===6&&!complete){complete=true;$('finale').classList.add('on');for(var j=0;j<3;j++)setTimeout(function(){burst(null)},j*350);}
+  }
+  $('reset').addEventListener('click',function(){
+    found={};count=0;complete=false;$('prog').textContent='0 of 6 found';$('finale').classList.remove('on');
+    $('tag').textContent='Pick a leaf';$('msg').textContent='Six leaves are waiting for you.';
+    document.querySelectorAll('.leaf').forEach(function(b){b.classList.remove('found')});
+  });
+  // Thanksgiving = fourth Thursday of November
+  function tg(y){var d=new Date(Date.UTC(y,10,1)),add=(4-d.getUTCDay()+7)%7;return new Date(Date.UTC(y,10,1+add+21))}
+  var localNow=new Date(),today=Date.UTC(localNow.getFullYear(),localNow.getMonth(),localNow.getDate()),t=tg(localNow.getFullYear());
+  if(today>t.getTime())t=tg(localNow.getFullYear()+1);
+  var days=Math.floor((t.getTime()-today)/864e5),label=t.toLocaleDateString(undefined,{month:'short',day:'numeric',timeZone:'UTC'});
+  $('chip').textContent=days===0?'Happy Thanksgiving! Today is the day':days===1?'Thanksgiving is tomorrow ('+label+')':days+' days until Thanksgiving ('+label+')';
+
+  var c=$('fall'),x=c.getContext('2d'),fl=[],bits=[];
+  function size(){
+    var d=window.devicePixelRatio||1;c.width=innerWidth*d;c.height=innerHeight*d;x.setTransform(d,0,0,d,0,0);
+    if(calm){c.hidden=true;return}
+    fl=[];var n=Math.min(34,Math.round(innerWidth/28));
+    for(var k=0;k<n;k++)fl.push(mk(Math.random()*innerHeight));
+  }
+  function mk(y){return{x:Math.random()*innerWidth,y:y,s:Math.random()*10+7,v:Math.random()*.9+.4,a:Math.random()*6.28,w:Math.random()*.03+.01,c:cols[Math.floor(Math.random()*cols.length)],o:Math.random()*.35+.45}}
+  function burst(r){
+    if(calm)return;
+    for(var k=0;k<14;k++){
+      var px=r?r.left+r.width/2:Math.random()*innerWidth,py=r?r.top+r.height/2:Math.random()*innerHeight*.5;
+      bits.push({x:px,y:py,vx:(Math.random()-.5)*5,vy:-Math.random()*4-1,a:Math.random()*6.28,s:Math.random()*8+6,c:cols[k%cols.length],l:1});
+    }
+  }
+  function leaf(px,py,s,a,col,o){
+    x.save();x.translate(px,py);x.rotate(a);x.globalAlpha=o;x.fillStyle=col;
+    x.beginPath();x.moveTo(0,-s);x.quadraticCurveTo(s*.8,-s*.2,0,s);x.quadraticCurveTo(-s*.8,-s*.2,0,-s);x.fill();x.restore();
+  }
+  function draw(){
+    x.clearRect(0,0,innerWidth,innerHeight);
+    for(var k=0;k<fl.length;k++){var f=fl[k];
+      if(!calm){f.y+=f.v;f.a+=f.w;f.x+=Math.sin(f.a*2)*.6;if(f.y>innerHeight+20)fl[k]=mk(-20);}
+      leaf(f.x,f.y,f.s,f.a,f.c,f.o);}
+    for(var p=bits.length-1;p>=0;p--){var q=bits[p];
+      q.x+=q.vx;q.y+=q.vy;q.vy+=.18;q.a+=.12;q.l-=.016;
+      if(q.l<=0){bits.splice(p,1);continue;}
+      leaf(q.x,q.y,q.s,q.a,q.c,q.l);}
+    if(!calm)requestAnimationFrame(draw);
+  }
+  addEventListener('resize',size);size();
+  if(!calm)requestAnimationFrame(draw);
+})();
+</script>
+
+</body>
+</html>
