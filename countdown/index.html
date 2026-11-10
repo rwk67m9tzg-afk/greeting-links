@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Twenty-five little notes, one new door each day in December. A Christmas surprise made just for you.">
+<meta name="theme-color" content="#0E3A3C">
+<link rel="canonical" href="https://rwk67m9tzg-afk.github.io/greeting-links/countdown/">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="25 Days">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Twenty-Five Days of You">
+<meta property="og:description" content="Twenty-five little notes, one new door each day in December. Open your Christmas surprise.">
+<meta property="og:url" content="https://rwk67m9tzg-afk.github.io/greeting-links/countdown/">
+<meta property="og:image" content="https://rwk67m9tzg-afk.github.io/greeting-links/countdown/og-countdown.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A glowing golden door in a teal advent calendar">
+<meta name="twitter:card" content="summary_large_image">
+<title>Twenty-Five Days of You</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Outfit:wght@400;500;600&display=swap">
+<style>
+/* Layout: deep teal night; a 5x5 grid of numbered doors that unlock one per day in December, each opening to a love note. Single dark look by choice. */
+:root{
+  --bg:#0E3A3C; --bg2:#154F51; --ink:#FFF4DC; --muted:#A9CFC8; --coral:#FF7F6B; --butter:#FFE29A; --door:#1D6063; --lock:#12494B;
+  --display:'Gloock',Georgia,serif; --body:'Outfit',system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:linear-gradient(180deg,var(--bg2),var(--bg) 75%) fixed,var(--bg);color:var(--ink);font:400 16px/1.5 var(--body);padding-block:32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+#snow{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+main{position:relative;z-index:1;max-width:520px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}
+.chip{margin:0;border:1px solid rgba(255,226,154,.5);border-radius:999px;padding:6px 16px;font-size:13px;letter-spacing:.05em;color:var(--butter);font-weight:500}
+h1{margin:0;font:400 clamp(34px,9.5vw,48px)/1.08 var(--display);text-wrap:balance}
+.sub{margin:0;color:var(--muted)}
+.grid{width:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;perspective:800px}
+.door{appearance:none;position:relative;aspect-ratio:1;border:1px solid rgba(255,244,220,.25);border-radius:10px;background:var(--door);color:var(--ink);font:400 clamp(20px,6vw,28px) var(--display);cursor:pointer;transform-origin:left center;transition:transform .5s ease,background .3s;padding:0}
+.door.locked{background:var(--lock);color:rgba(255,244,220,.5)}
+.door.today{border-color:var(--butter);box-shadow:0 0 0 2px rgba(255,226,154,.35),0 0 18px rgba(255,226,154,.45);animation:glow 2s ease-in-out infinite}
+.door.open{background:var(--coral);color:#3A0E08;border-color:transparent;transform:rotateY(-24deg)}
+.door .lk{position:absolute;right:6px;bottom:5px;width:12px;height:12px;opacity:.7}
+@keyframes glow{50%{box-shadow:0 0 0 2px rgba(255,226,154,.2),0 0 8px rgba(255,226,154,.2)}}
+.door:focus-visible,input:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.note{width:100%;min-height:150px;border-radius:12px;background:var(--ink);color:#12302F;padding:22px 20px;display:flex;flex-direction:column;justify-content:center;gap:8px;box-shadow:0 12px 26px rgba(0,0,0,.35)}
+.note p{margin:0}
+.note .tag{font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:#B2412F}
+.note .big{font:400 clamp(20px,5.6vw,25px)/1.32 var(--display);text-wrap:pretty}
+.note.pop{animation:pop .45s cubic-bezier(.2,1.5,.4,1)}
+@keyframes pop{from{transform:scale(.88);opacity:0}to{transform:none;opacity:1}}
+.btn{appearance:none;border:1px solid var(--butter);background:transparent;color:var(--butter);font:500 14px var(--body);padding:10px 18px;border-radius:999px;min-height:44px;cursor:pointer}
+.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.sheet{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.backdrop{position:absolute;inset:0;background:rgba(5,25,26,.62)}
+.panel{position:relative;width:100%;max-width:520px;max-height:90%;overflow-y:auto;background:var(--ink);color:#12302F;border-radius:18px 18px 0 0;padding:24px max(16px,env(safe-area-inset-right,0px)) max(20px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:14px;text-align:left;animation:rise .35s ease}
+@keyframes rise{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.panel h2{margin:0;font:400 28px/1.1 var(--display);padding-right:44px}
+.panel h2:focus{outline:none}
+.panel .lead{margin:0;color:#3C5B59}
+.x{position:absolute;top:10px;right:10px;width:44px;height:44px;border:0;background:none;color:#12302F;cursor:pointer;border-radius:50%}
+.x:focus-visible,.panel input:focus-visible{outline:3px solid #B2412F;outline-offset:2px}
+.opt{border:1px solid rgba(18,48,47,.2);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.opt h3{margin:0;font:600 12px var(--body);letter-spacing:.16em;text-transform:uppercase;color:#B2412F}
+.opt p{margin:0;font-size:15px}
+.opt label{display:flex;flex-direction:row;align-items:center;gap:10px;letter-spacing:.04em;text-transform:none;font-size:15px;font-weight:500;color:#12302F}
+.opt input[type=time]{font:400 16px var(--body);color:#12302F;background:#fff;border:1px solid rgba(18,48,47,.35);border-radius:8px;padding:8px 10px;min-height:44px}
+.btn.solid{background:var(--coral);color:#3A0E08;border-color:var(--coral);font-weight:600}
+.btn.dark{color:#12302F;border-color:#12302F}
+.out{background:rgba(255,127,107,.14);border-radius:8px;padding:12px;font-size:14px}
+.out ul{margin:6px 0;padding-left:20px}
+.out p{font-size:14px}
+.phoneWrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.phone{display:grid;grid-template-columns:repeat(4,38px);gap:8px;padding:12px;background:#12302F;border-radius:16px}
+.ic{width:38px;height:38px;border-radius:9px;background:rgba(255,244,220,.18)}
+.ic.me{background:var(--coral);color:#3A0E08;display:grid;place-items:center;font:400 15px var(--display);box-shadow:0 0 0 2px var(--butter)}
+.cap{font-size:13px;color:#3C5B59}
+@media(prefers-reduced-motion:reduce){.door{transition:none}.door.today,.note.pop,.panel{animation:none}.door:hover{transform:none}}
+</style>
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+
+<canvas id="snow" aria-hidden="true"></canvas>
+<main>
+  <p class="chip" id="chip">Christmas is Dec 25</p>
+  <h1 id="title">A little something every day, friend</h1>
+  <p class="sub" id="sub">One door unlocks each day in December. Tap today's door.</p>
+
+  <div class="grid" id="grid" role="group" aria-label="Advent doors"></div>
+
+  <section class="note" id="note" aria-live="polite">
+    <p class="tag" id="tag">Your first door</p>
+    <p class="big" id="msg">Doors open one day at a time. Come back tomorrow for the next one.</p>
+    <p class="cap" id="signature" hidden></p>
+  </section>
+  <button class="btn" id="getRem" type="button">Get daily reminders</button>
+</main>
+
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="backdrop" id="backdrop"></div>
+  <div class="panel">
+    <button class="x" id="sheetClose" type="button" aria-label="Close"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+    <h2 id="sheetTitle" tabindex="-1">Never miss a door</h2>
+    <p class="lead">A new door opens every day. Pick how you want to be reminded.</p>
+
+    <section class="opt">
+      <h3>Daily reminder</h3>
+      <p>Adds one calendar event each morning from December 1 to 25, with a link to open that day's door.</p>
+      <label for="rtime">Remind me at <input type="time" id="rtime" value="08:00"></label>
+      <button class="btn solid" id="remBtn" type="button">Add reminders to my calendar</button>
+      <div class="out" id="remOut" hidden aria-live="polite"></div>
+    </section>
+
+    <section class="opt" id="homeCard">
+      <h3>Home screen icon</h3>
+      <div class="phoneWrap">
+        <div class="phone" aria-hidden="true"><span class="ic"></span><span class="ic"></span><span class="ic"></span><span class="ic"></span><span class="ic"></span><span class="ic me">25</span><span class="ic"></span><span class="ic"></span></div>
+        <span class="cap">Your countdown, one tap from the home screen</span>
+      </div>
+      <p id="how"></p>
+      <button class="btn solid" id="installBtn" type="button" hidden>Install on this phone</button>
+    </section>
+
+    <button class="btn dark" id="later" type="button">Maybe later</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var calm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var msgs=[
+    "The countdown starts today. Twenty-five days, twenty-five reasons you are my favorite person.",
+    "You make ordinary Tuesdays feel like a holiday.",
+    "Your laugh is my favorite sound, even louder than the Christmas music.",
+    "I still smile when your name pops up on my phone.",
+    "Coupon: one hot cocoa, made exactly the way you like it.",
+    "Thank you for putting up with how I load the dishwasher.",
+    "I would pick your couch over any fancy party.",
+    "Today's challenge: find the ugliest sweater you can, so we can wear them together.",
+    "You are the first person I want to tell good news to.",
+    "Coupon: you choose the movie tonight, and I will not complain once.",
+    "Almost halfway there, and you are still my best gift.",
+    "I love how you sing along to songs you do not know the words to.",
+    "Remember our first winter together? I would do it all again.",
+    "Coupon: a slow dance in the kitchen, whenever you call it.",
+    "You stay warm even when it is twenty below. That is a superpower.",
+    "I am saving you the last cookie. Do not tell anyone.",
+    "Wherever we are this Christmas, I am glad it is together.",
+    "Coupon: twenty-minute back rub, starting now.",
+    "You make me braver, kinder, and a little sillier.",
+    "Five days left, and I am warning you: the surprises get better.",
+    "The longest night of the year, and I am glad I get to spend it with you.",
+    "Coupon: breakfast in bed, hot and ready.",
+    "Tomorrow is Christmas Eve, and tonight I just want to say thank you.",
+    "Tonight: pajamas, lights low, and you next to me. Perfect.",
+    "Merry Christmas, {to}. You are the gift."
+  ];
+  var params=new URLSearchParams(window.location.search),nowYear=new Date().getFullYear();
+  var names={to:'friend',from:''},seasonYear=nowYear,linkToken='';
+  var namesPrefix='countdown:names:',lastLinkKey='countdown:last-link';
+  function clean(value,max){return String(value||'').replace(/[\u0000-\u001F\u007F-\u009F]/g,'').trim().slice(0,max)}
+  function readStore(key,fallback){try{var v=localStorage.getItem(key);return v===null?fallback:v}catch(e){return fallback}}
+  function writeStore(key,value){try{localStorage.setItem(key,value)}catch(e){}}
+  function tokenFor(n){return encodeURIComponent(JSON.stringify([n.to.toLowerCase(),n.from.toLowerCase()]))}
+  if(params.has('to')||params.has('from')){
+    names.to=clean(params.get('to'),24)||'friend';
+    names.from=clean(params.get('from'),24);
+    linkToken=tokenFor(names);
+    var savedNames=null;try{savedNames=JSON.parse(readStore(namesPrefix+linkToken,'null'))}catch(e){}
+    if(savedNames&&Number.isInteger(savedNames.year))seasonYear=savedNames.year;
+    writeStore(namesPrefix+linkToken,JSON.stringify({to:names.to,from:names.from,year:seasonYear}));
+    writeStore(lastLinkKey,linkToken);
+  }else{
+    linkToken=readStore(lastLinkKey,'');
+    var lastNames=null;try{lastNames=JSON.parse(linkToken?readStore(namesPrefix+linkToken,'null'):'null')}catch(e){}
+    if(lastNames&&typeof lastNames==='object'){
+      names.to=clean(lastNames.to,24)||'friend';names.from=clean(lastNames.from,24);
+      if(Number.isInteger(lastNames.year))seasonYear=lastNames.year;
+      linkToken=tokenFor(names);
+    }else linkToken=tokenFor(names);
+  }
+  $('title').textContent='A little something every day, '+names.to;
+  document.title='Twenty-Five Days of You for '+names.to;
+  var previewDay=params.get('preview')==='12'?12:null,previewSuffix=previewDay?':preview':'';
+  var openedKey='adv-opened:countdown:'+linkToken+previewSuffix,welcomeKey='adv-welcome:countdown:'+linkToken+previewSuffix;
+  var opened={};try{var savedOpened=JSON.parse(readStore(openedKey,'{}'));if(savedOpened&&typeof savedOpened==='object')opened=savedOpened}catch(e){}
+  function save(){writeStore(openedKey,JSON.stringify(opened))}
+  function isSeasonPast(){var n=new Date();return n.getFullYear()>seasonYear||(n.getFullYear()===seasonYear&&n.getMonth()===11&&n.getDate()>25)}
+  function realDay(){var n=new Date();if(isSeasonPast())return 99;if(n.getFullYear()!==seasonYear)return 0;return n.getMonth()===11?Math.min(n.getDate(),25):0}
+  function curDay(){var current=realDay();return current===99?99:(previewDay||current)}
+  var today=0;
+  function fmt(t){return t.replace(/\{to\}/g,names.to)}
+  var grid=$('grid'),doors=[];
+  for(var d=1;d<=25;d++)(function(d){
+    var b=document.createElement('button');b.type='button';b.className='door';b.textContent=d;
+    b.addEventListener('click',function(){pick(d)});grid.appendChild(b);doors.push(b);
+  })(d);
+  function paint(){
+    today=curDay();
+    if(today===99){for(var all=1;all<=25;all++)opened[all]=true;save();}
+    doors.forEach(function(b,i){
+      var d=i+1,lockedNow=d>today&&!opened[d],old=b.querySelector('.lk');if(old)old.remove();
+      b.className='door'+(lockedNow?' locked':'')+(d===today?' today':'')+(opened[d]?' open':'');
+      b.setAttribute('aria-label','December '+d+(lockedNow?', locked':opened[d]?', opened':', ready to open'));
+      if(lockedNow)b.insertAdjacentHTML('beforeend','<svg class="lk" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="5" width="8" height="6" rx="1" fill="currentColor"/><path d="M4 5V3.5a2 2 0 0 1 4 0V5" stroke="currentColor" fill="none" stroke-width="1.3"/></svg>');
+    });
+    var n=new Date(),t=Date.UTC(n.getFullYear(),11,25),t0=Date.UTC(n.getFullYear(),n.getMonth(),n.getDate()),left=Math.floor((t-t0)/864e5);
+    $('chip').textContent=today===99?'All 25 doors are open':left>1?left+' days until Christmas':left===1?'Christmas is tomorrow':left===0?'Merry Christmas!':'Christmas is coming';
+  }
+  function say(tag,text){
+    $('tag').textContent=tag;$('msg').textContent=text;
+    $('signature').hidden=true;
+    var nt=$('note');nt.classList.remove('pop');void nt.offsetWidth;nt.classList.add('pop');
+  }
+  function pick(d){
+    if(d>today){say('Door '+d+' is still locked','This one opens on December '+d+'. No peeking, '+names.to+'. Come back then.');return;}
+    opened[d]=true;save();paint();
+    say('December '+d,fmt(msgs[d-1]));
+    $('signature').textContent=names.from?'With love, '+names.from:'';
+    $('signature').hidden=d!==25||!names.from;
+  }
+  paint();
+
+  // Reminder sheet: shown on first visit, reopened by the button under the note
+  var sheet=$('sheet'),seen=readStore(welcomeKey,'')==='1';
+  function openSheet(){sheet.hidden=false;document.body.style.overflow='hidden';$('sheetTitle').focus();}
+  function closeSheet(){sheet.hidden=true;document.body.style.overflow='';writeStore(welcomeKey,'1');$('getRem').focus();}
+  $('getRem').addEventListener('click',openSheet);
+  $('sheetClose').addEventListener('click',closeSheet);
+  $('later').addEventListener('click',closeSheet);
+  $('backdrop').addEventListener('click',closeSheet);
+  sheet.addEventListener('keydown',function(e){
+    if(e.key!=='Tab')return;
+    var items=sheet.querySelectorAll('button:not([hidden]),input:not([hidden]),a[href],[tabindex]:not([tabindex="-1"])');
+    if(!items.length)return;
+    var first=items[0],last=items[items.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+  });
+  addEventListener('keydown',function(e){if(e.key==='Escape'&&!sheet.hidden)closeSheet();});
+  setTimeout(function(){if(!seen)openSheet();},1200);
+
+  // Home screen: Android can install with one tap, iPhone needs the Share menu
+  var ua=navigator.userAgent,ios=/iPhone|iPad|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  var standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+  var deferred=null;
+  $('how').textContent=ios?'Tap the Share button at the bottom of Safari, then choose Add to Home Screen.':'Open your browser menu, then choose Add to Home screen or Install app.';
+  if(standalone)$('homeCard').hidden=true;
+  addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;$('installBtn').hidden=false;});
+  $('installBtn').addEventListener('click',function(){if(deferred){deferred.prompt();deferred=null;$('installBtn').hidden=true;}});
+
+  // Daily calendar reminders (.ics file, one event per day)
+  function pad(n){return (n<10?'0':'')+n}
+  function esc(s){return s.replace(/\\/g,'\\\\').replace(/\r\n|\n|\r/g,'\\n').replace(/;/g,'\\;').replace(/,/g,'\\,')}
+  function foldLine(line){
+    var out=[],part='',bytes=0,encoder=new TextEncoder();
+    Array.from(line).forEach(function(ch){var n=encoder.encode(ch).length;if(bytes+n>75){out.push(part);part=' '+ch;bytes=1+n}else{part+=ch;bytes+=n}});
+    out.push(part);return out.join('\r\n');
+  }
+  function hash(s){var h=2166136261;for(var k=0;k<s.length;k++){h^=s.charCodeAt(k);h=Math.imul(h,16777619)}return(h>>>0).toString(16)}
+  function makeIcs(yr,hh,mm){
+    var now=new Date(),url=new URL(location.href);url.search='';url.hash='';url.searchParams.set('to',names.to);if(names.from)url.searchParams.set('from',names.from);
+    var stamp=now.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z',href=url.href,token=hash(linkToken);
+    var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Twenty-Five Days of You//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
+    for(var d=1;d<=25;d++){
+      L.push('BEGIN:VEVENT','UID:doors-'+token+'-'+yr+'-'+d+'@twenty-five-days','DTSTAMP:'+stamp,
+        'DTSTART:'+yr+'12'+pad(d)+'T'+pad(hh)+pad(mm)+'00','DURATION:PT15M',
+        'SUMMARY:'+esc('Your December '+d+' door is ready'),
+        'DESCRIPTION:'+esc('Open today\'s door: '+href),'URL:'+href,
+        'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:Door ready','TRIGGER:PT0S','END:VALARM','END:VEVENT');
+    }
+    L.push('END:VCALENDAR');return L.map(foldLine).join('\r\n')+'\r\n';
+  }
+  $('remBtn').addEventListener('click',function(){
+    var now=new Date(),yr=Math.max(seasonYear,now.getFullYear());if(isSeasonPast()&&yr<=seasonYear)yr=seasonYear+1;
+    var p=($('rtime').value||'08:00').split(':'),hh=+p[0],mm=+p[1];
+    var downloadFailed=false;
+    try{
+      var b=new Blob([makeIcs(yr,hh,mm)],{type:'text/calendar;charset=utf-8'}),a=document.createElement('a'),blobUrl=URL.createObjectURL(b);
+      a.href=blobUrl;a.download='christmas-doors.ics';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(blobUrl)},1000);
+    }catch(e){downloadFailed=true}
+    var h12=hh%12===0?12:hh%12,ap=hh<12?'AM':'PM',tm=h12+':'+pad(mm)+' '+ap;
+    var out=$('remOut');out.replaceChildren();out.hidden=false;
+    var lead=document.createElement('p');lead.textContent=downloadFailed?'The calendar file could not be created. Please try again.':'Your calendar file is ready with 25 events at '+tm+'.';out.appendChild(lead);
+    if(!downloadFailed){var list=document.createElement('ul');for(var d=1;d<=3;d++){var li=document.createElement('li');li.textContent='Dec '+d+', '+tm+': Your December '+d+' door is ready';list.appendChild(li)}out.appendChild(list);var tail=document.createElement('p');tail.textContent='The reminders continue through December 25. Each one links back to your card.';out.appendChild(tail)}
+  });
+
+  var c=$('snow'),x=c.getContext('2d'),fl=[];
+  function size(){
+    var dpr=window.devicePixelRatio||1;c.width=innerWidth*dpr;c.height=innerHeight*dpr;x.setTransform(dpr,0,0,dpr,0,0);
+    if(calm){c.hidden=true;return}
+    fl=[];var n=Math.min(90,Math.round(innerWidth/7));
+    for(var k=0;k<n;k++)fl.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2+.6,v:Math.random()*.5+.2,p:Math.random()*6.28});
+  }
+  function draw(){
+    x.clearRect(0,0,innerWidth,innerHeight);x.fillStyle='rgba(255,255,255,.75)';
+    for(var k=0;k<fl.length;k++){var f=fl[k];
+      if(!calm){f.y+=f.v;f.p+=.01;f.x+=Math.sin(f.p)*.3;if(f.y>innerHeight+3){f.y=-3;f.x=Math.random()*innerWidth}}
+      x.beginPath();x.arc(f.x,f.y,f.r,0,6.283);x.fill();}
+    if(!calm)requestAnimationFrame(draw);
+  }
+  addEventListener('resize',size);size();
+  if(!calm)requestAnimationFrame(draw);
+  if('serviceWorker' in navigator&&window.isSecureContext)navigator.serviceWorker.register('./sw.js').catch(function(){});
+})();
+</script>
+
+</body>
+</html>
