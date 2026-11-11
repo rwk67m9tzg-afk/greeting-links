@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A little Thanksgiving wish, tucked beneath a slice of pie for someone special.">
+  <meta name="theme-color" content="#F8EBDD">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="A Slice of Thanks">
+  <meta property="og:description" content="Lift a slice to uncover a warm Thanksgiving wish.">
+  <title>A Slice of Thanks</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='37' r='24' fill='%23C76E2A' stroke='%235A2A1C' stroke-width='5'/%3E%3Cpath d='M8 35h48' stroke='%23F1C27B' stroke-width='7'/%3E%3Cpath d='M21 17 43 45M43 17 21 45' stroke='%23F8EBDD' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js"}}</script>
+  <style>
+    :root{color-scheme:light;--cream:#F8EBDD;--paper:#FFF9F0;--ink:#382016;--rust:#9F4028;--pumpkin:#C76E2A;--gold:#E7B96B;--sage:#526B4D;--body:"Karla",Arial,sans-serif;--display:"DM Serif Display",Georgia,serif}
+    *{box-sizing:border-box}[hidden]{display:none!important}
+    html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 50% 0%,#fff8ec 0%,var(--cream) 55%,#efdbc6 100%);color:var(--ink)}
+    body{min-height:100svh;overflow-x:hidden;font-family:var(--body)}
+    #leaves{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+    .page{position:relative;z-index:1;min-height:100svh;display:flex;justify-content:center;padding:34px 16px 38px}
+    main{width:100%;max-width:520px;text-align:center}
+    .eyebrow{margin:0 0 8px;color:var(--sage);font-size:.72rem;font-weight:800;letter-spacing:.17em;text-transform:uppercase}
+    h1{margin:0;color:var(--ink);font:400 clamp(2.25rem,9vw,3.3rem)/1.06 var(--display);text-wrap:balance}
+    .subtitle{max-width:410px;margin:10px auto 0;color:#573322;font-size:.98rem;line-height:1.5}
+    .recipient{color:var(--rust)}
+    .pie-scene{position:relative;width:min(100%,390px);height:310px;margin:4px auto 0;perspective:950px;display:grid;place-items:center;touch-action:pan-y}
+    #three-pie{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;pointer-events:none;touch-action:none;outline:none;z-index:2}
+    #three-pie:focus-visible{outline:3px solid var(--rust);outline-offset:2px;border-radius:18px}
+    .pie-scene.webgl-ready #three-pie{opacity:1;pointer-events:auto}
+    .pie-scene.webgl-ready .pie-stage{display:none}
+    .pie-stage{position:relative;width:290px;height:265px;transform-style:preserve-3d;transform:rotateX(0deg);}
+    .turntable{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(58deg) rotateZ(-25deg) rotateY(var(--tilt,0deg));transition:transform .35s ease}
+    .turntable.spinning{animation:pie-spin .95s cubic-bezier(.18,.7,.2,1)}
+    @keyframes pie-spin{from{transform:rotateX(58deg) rotateZ(-25deg) rotateY(0deg)}to{transform:rotateX(58deg) rotateZ(335deg) rotateY(0deg)}}
+    .plate{position:absolute;left:5px;top:0;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle at 45% 38%,#fffdf8,#dfcfb8 72%,#ac9580);box-shadow:0 18px 0 #b49d87,0 23px 24px #44241435;transform:translateZ(-20px);}
+    .plate::before{content:"";position:absolute;inset:13px;border:3px solid #c8b39b;border-radius:50%;box-shadow:inset 0 0 0 4px #f8f0e4}
+    .crust{position:absolute;left:28px;top:23px;width:234px;height:234px;border-radius:50%;background:radial-gradient(circle at 37% 30%,#f5c987,#c87337 60%,#8f3e20 100%);box-shadow:0 13px 0 #86411f,0 16px 12px #4a24164d;transform:translateZ(2px)}
+    .crust::before{content:"";position:absolute;inset:5px;border:8px dotted #f5d39d;border-radius:50%;filter:drop-shadow(0 1px 1px #7f3f20)}
+    .filling{position:absolute;left:47px;top:42px;width:196px;height:196px;border-radius:50%;border:3px solid #9b4d27;background:radial-gradient(circle at 42% 34%,#e69643,#bc5e23 73%,#8e3c1d);transform:translateZ(17px);overflow:hidden}
+    .filling::before{content:"";position:absolute;inset:9px;border-radius:50%;background:repeating-linear-gradient(45deg,transparent 0 24px,#f2c8879c 25px 30px),repeating-linear-gradient(-45deg,transparent 0 24px,#f2c8879c 25px 30px);opacity:.9}
+    .slice{position:absolute;inset:0;border-radius:50%;z-index:2;clip-path:polygon(50% 50%,50% 0,100% 0,100% 50%);background:linear-gradient(145deg,#efb765,#c86d31 67%,#93451f);border:0;transform:translateZ(24px);transform-origin:53% 49%;transition:transform .85s cubic-bezier(.18,.72,.24,1),opacity .6s ease}
+    .slice::before{content:"";position:absolute;inset:8px;background:repeating-linear-gradient(45deg,transparent 0 25px,#ffe0a8 26px 31px),repeating-linear-gradient(-45deg,transparent 0 25px,#ffe0a8 26px 31px);opacity:.8}
+    .slice.taken{transform:translate3d(62px,-55px,85px) rotateZ(12deg);opacity:0}
+    .pie-shadow{position:absolute;left:34px;top:228px;width:220px;height:40px;border-radius:50%;background:#5b311f25;filter:blur(9px);transform:translateZ(-32px)}
+    .controls{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:0 auto 10px}
+    button{min-height:48px;padding:11px 17px;border:2px solid var(--ink);border-radius:999px;font:700 .9rem var(--body);cursor:pointer;touch-action:manipulation;transition:transform .15s ease,background .15s ease,box-shadow .15s ease}
+    button:focus-visible{outline:3px solid var(--rust);outline-offset:3px}
+    button:active{transform:translateY(2px)}
+    .primary{background:var(--rust);color:#fff9f0;box-shadow:0 4px 0 #602719}
+    .primary:hover:not(:disabled){background:#85351f}
+    .secondary,.sound{background:#fff9f0;color:var(--ink);box-shadow:0 4px 0 #c5ad94}
+    .secondary:hover:not(:disabled),.sound:hover{background:#fff}
+    button:disabled{opacity:.58;cursor:default}
+    .sound-row{margin:2px 0 14px}
+    .found-count{display:inline-block;margin:4px auto 14px;padding:7px 12px;border:1px solid #c6ac91;border-radius:999px;background:#fff9f0;color:#4e3929;font-size:.78rem;font-weight:800}
+    .table-items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:460px;margin:0 auto 16px}
+    .harvest-item{min-height:94px;padding:10px 6px 8px;border:1px solid #c6ac91;border-radius:16px;background:#fff9f0;color:var(--ink);box-shadow:0 5px 0 #c5ad94;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;perspective:400px}
+    .harvest-item:hover{background:#fffdf9;transform:translateY(-3px) rotateX(5deg)}
+    .harvest-item svg{width:40px;height:40px;transition:transform .25s ease;transform-style:preserve-3d}
+    .harvest-item:active svg,.harvest-item.bop svg{animation:object-bop .48s ease}
+    .harvest-item span{font-size:.77rem;font-weight:800;line-height:1.1}
+    @keyframes object-bop{35%{transform:rotateY(24deg) rotateZ(-8deg) scale(1.14)}70%{transform:rotateY(-10deg) rotateZ(5deg) scale(.98)}}
+    .note-dialog{width:min(calc(100% - 32px),420px);max-width:420px;padding:25px 23px 21px;border:2px solid #bd8c65;border-radius:20px;background:#fff9f0;color:var(--ink);box-shadow:0 20px 70px #27170f55;text-align:center}
+    .note-dialog::backdrop{background:#241610a8;backdrop-filter:blur(3px)}
+    .note-dialog[open]{animation:note-pop .28s cubic-bezier(.2,1.4,.4,1)}
+    @keyframes note-pop{from{opacity:0;transform:translateY(14px) scale(.88)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .note-dialog h2{margin:0 0 10px;color:var(--rust);font:400 1.75rem/1.1 var(--display)}
+    .note-dialog p{margin:0;color:#42271b;font-size:1.05rem;font-weight:600;line-height:1.55}
+    .note-dialog .note-from{margin-top:12px;color:var(--sage);font:italic 400 1.15rem var(--display)}
+    .close-note{min-height:48px;margin-top:19px;padding:10px 20px;border:0;border-radius:999px;background:var(--rust);color:#fff9f0;font:700 .9rem var(--body);cursor:pointer}
+    .hint{margin:12px 0 0;color:#614534;font-size:.78rem}
+    @media(max-width:360px){.pie-scene{height:278px}.pie-stage{transform:scale(.88)}.controls{gap:8px}.controls button{padding-left:13px;padding-right:13px}.table-items{gap:8px}.harvest-item{min-height:88px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}.slice.taken{transform:translate3d(62px,-55px,85px) rotateZ(12deg);opacity:0}}
+  </style>
+</head>
+<body>
+  <canvas id="leaves" aria-hidden="true"></canvas>
+  <div class="page"><main>
+    <p class="eyebrow">A Thanksgiving wish</p>
+    <h1>A little slice of thanks for <span id="to-name" class="recipient">friend</span></h1>
+    <p class="subtitle">A cozy little Thanksgiving table is waiting. Tap the pie, turkey, pumpkin, corn, candle, or leaves to find six notes.</p>
+    <div id="pie-scene" class="pie-scene" aria-label="Interactive Thanksgiving table">
+      <canvas id="three-pie" tabindex="0" role="img" aria-label="Interactive 3D pie, turkey, pumpkin, corn, candle, and autumn leaves. Drag to turn the table or tap a keepsake to open its note."></canvas>
+      <div class="pie-stage"><div id="turntable" class="turntable" style="--tilt:0deg">
+        <div class="plate"></div><div class="pie-shadow"></div><div class="crust"></div><div class="filling"></div><div id="slice" class="slice"></div>
+      </div></div>
+    </div>
+    <div class="controls">
+      <button id="reveal-button" class="primary" type="button">Lift a slice</button>
+      <button id="spin-button" class="secondary" type="button">Give it a spin</button>
+    </div>
+    <p id="found-count" class="found-count" aria-live="polite" aria-atomic="true">0 of 6 little notes found</p>
+    <div class="table-items" aria-label="Tap a Thanksgiving table keepsake">
+      <button class="harvest-item" type="button" data-note="1" aria-label="Tap the turkey for a Thanksgiving note">
+        <svg viewBox="0 0 80 80" aria-hidden="true"><path d="M22 43C8 37 9 21 17 16c2 9 8 12 15 14M30 36C18 24 24 10 34 8c-1 10 3 15 9 20M42 30c-5-14 6-24 16-22-5 9-3 16 1 23M51 34c2-14 16-19 24-13-8 6-9 13-8 19" fill="#A8442D" stroke="#66331F" stroke-width="2.5" stroke-linejoin="round"/><ellipse cx="39" cy="48" rx="19" ry="22" fill="#C98342" stroke="#66331F" stroke-width="2.5"/><circle cx="57" cy="33" r="12" fill="#D99550" stroke="#66331F" stroke-width="2.5"/><path d="m67 32 10 4-10 4" fill="#E3A83C" stroke="#66331F" stroke-width="2"/><circle cx="60" cy="30" r="1.8" fill="#24170F"/><path d="M54 43c-7-5 0-9 1-4 1-5 8-1 1 4M32 68v5m13-5v5m-7-1h-7m14 0h-7" fill="none" stroke="#66331F" stroke-width="2.5" stroke-linecap="round"/></svg><span>Turkey</span>
+      </button>
+      <button class="harvest-item" type="button" data-note="2" aria-label="Tap the pumpkin for a Thanksgiving note">
+        <svg viewBox="0 0 80 80" aria-hidden="true"><path d="M40 19c-3-9 1-13 8-15" fill="none" stroke="#526B4D" stroke-width="5" stroke-linecap="round"/><path d="M40 20C23 13 10 27 12 44c1 17 12 25 28 22 16 3 27-5 28-22 2-17-11-31-28-24Z" fill="#D98235" stroke="#8B431F" stroke-width="2.5"/><path d="M40 20c-10 8-11 34 0 46m0-46c10 8 11 34 0 46M25 20c-8 12-8 31 0 42m30-42c8 12 8 31 0 42" fill="none" stroke="#F4B660" stroke-width="3"/></svg><span>Pumpkin</span>
+      </button>
+      <button class="harvest-item" type="button" data-note="3" aria-label="Tap the corn for a Thanksgiving note">
+        <svg viewBox="0 0 80 80" aria-hidden="true"><path d="M25 18C17 31 20 56 35 67c-3-16 0-35 7-48M56 18c8 13 5 38-10 49 3-16 0-35-7-48" fill="#78934F" stroke="#485B36" stroke-width="2.5" stroke-linejoin="round"/><path d="M34 13c-9 10-10 38 4 53 14-15 13-43 4-53-2-3-6-3-8 0Z" fill="#F3C94D" stroke="#9B7223" stroke-width="2.5"/><path d="M34 24h10M32 32h14M32 40h14M33 48h12M35 56h8" stroke="#D59F2E" stroke-width="2.5"/></svg><span>Sweet corn</span>
+      </button>
+      <button class="harvest-item" type="button" data-note="4" aria-label="Tap the candle for a Thanksgiving note">
+        <svg viewBox="0 0 80 80" aria-hidden="true"><path d="M40 8c-12 12 1 15-4 23 10-3 13-11 9-18 8 8 13 18 4 25H31c-11-8-4-20 9-30Z" fill="#E7A83F" stroke="#9F5425" stroke-width="2.5"/><path d="M29 33h22v36H29z" fill="#F6E4C6" stroke="#85533A" stroke-width="2.5"/><path d="M29 42h22m-22 9h22m-22 9h22" stroke="#D3B494" stroke-width="2"/><path d="M40 25v8" stroke="#42271B" stroke-width="2.5"/></svg><span>Candle</span>
+      </button>
+      <button class="harvest-item" type="button" data-note="5" aria-label="Tap the autumn leaves for a Thanksgiving note">
+        <svg viewBox="0 0 80 80" aria-hidden="true"><path d="M39 68C21 50 11 35 18 16c17 1 30 10 27 27-2 11-6 19-6 25Z" fill="#BD6335" stroke="#75361F" stroke-width="2.5"/><path d="M40 67c12-20 24-32 20-51-17 0-29 11-25 27 2 10 5 17 5 24Z" fill="#D89B43" stroke="#8B5226" stroke-width="2.5"/><path d="M39 68 25 26m14 42 24-40M33 50l-10-2m19 9 13-5" fill="none" stroke="#F3D19A" stroke-width="2.5" stroke-linecap="round"/></svg><span>Autumn leaves</span>
+      </button>
+    </div>
+    <div class="sound-row"><button id="sound-button" class="sound" type="button" aria-pressed="true">Sound on</button></div>
+    <dialog id="note-dialog" class="note-dialog" aria-labelledby="note-title">
+      <h2 id="note-title" aria-live="polite" aria-atomic="true"></h2>
+      <p id="note-message" aria-live="polite" aria-atomic="true"></p>
+      <p id="note-from" class="note-from"></p>
+      <button id="close-note" class="close-note" type="button">Back to the feast</button>
+    </dialog>
+    <p class="hint">Move your pointer over the pie to tilt it. Tap each keepsake to uncover all six notes.</p>
+  </main></div>
+  <script>
+    (()=>{
+      'use strict';
+      const STORAGE_KEY='thanksgiving-pie.personalization.v1';
+      const DEFAULT_MESSAGE='I’m thankful for your laughter, your kindness, and all the ordinary moments that feel like home with you.';
+      const clean=(value,max)=>String(value??'').replace(/[\u0000-\u001f\u007f-\u009f]/g,'').trim().slice(0,max).trim();
+      let saved={to:'',from:'',message:''};
+      try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){const p=JSON.parse(raw);saved={to:clean(p.to,24),from:clean(p.from,24),message:clean(p.message,180)}}}catch(_error){}
+      const params=new URLSearchParams(location.search);
+      const toParam=params.has('to')?clean(params.get('to'),24):'';
+      const fromParam=params.has('from')?clean(params.get('from'),24):'';
+      const messageParam=params.has('msg')?clean(params.get('msg'),180):'';
+      const recipient=toParam||saved.to||'friend',sender=fromParam||saved.from||'',message=messageParam||saved.message||DEFAULT_MESSAGE;
+      try{localStorage.setItem(STORAGE_KEY,JSON.stringify({to:recipient,from:sender,message}))}catch(_error){}
+      document.getElementById('to-name').textContent=recipient;
+      document.getElementById('from-name').textContent=sender||'you';
+      const reduced=matchMedia('(prefers-reduced-motion: reduce)'),turntable=document.getElementById('turntable'),pieScene=document.getElementById('pie-scene'),slice=document.getElementById('slice'),revealButton=document.getElementById('reveal-button'),spinButton=document.getElementById('spin-button'),soundButton=document.getElementById('sound-button'),noteDialog=document.getElementById('note-dialog'),noteTitle=document.getElementById('note-title'),noteMessage=document.getElementById('note-message'),noteFrom=document.getElementById('note-from'),closeNote=document.getElementById('close-note'),foundCount=document.getElementById('found-count');
+      const notes=[
+        {title:'A slice of thanks',message:recipient+', '+message},
+        {title:'Turkey’s tiny toast',message:'May the laughter be loud, the sides be plentiful, and the couch be close by when the feast is done.'},
+        {title:'Pumpkin wishes',message:'Wishing you cozy blankets, golden leaves, and exactly the right amount of pie.'},
+        {title:'A kernel of truth',message:'The best thing on this table is the people gathered around it—and you’re one of my favorites.'},
+        {title:'A little glow',message:'May the warmth you bring other people find its way back to you tonight.'},
+        {title:'Leaf it to gratitude',message:'May the small, ordinary moments with you become the memories we treasure most.'}
+      ];
+      const found=new Set();let opener=null;
+      let revealed=false,soundOn=true,audio=null,spinTimer=0;
+      function chime(){if(!soundOn)return;try{const AudioContextClass=window.AudioContext||window.webkitAudioContext;if(!AudioContextClass)return;if(!audio)audio=new AudioContextClass();if(audio.state==='suspended')audio.resume();const now=audio.currentTime;[523.25,659.25,783.99].forEach((frequency,index)=>{const oscillator=audio.createOscillator(),gain=audio.createGain(),start=now+index*.16;oscillator.type='sine';oscillator.frequency.value=frequency;gain.gain.setValueAtTime(.0001,start);gain.gain.exponentialRampToValueAtTime(.055,start+.025);gain.gain.exponentialRampToValueAtTime(.0001,start+.42);oscillator.connect(gain);gain.connect(audio.destination);oscillator.start(start);oscillator.stop(start+.44)})}catch(_error){}}
+      function gobble(){if(!soundOn)return;try{const AudioContextClass=window.AudioContext||window.webkitAudioContext;if(!AudioContextClass)return;if(!audio)audio=new AudioContextClass();if(audio.state==='suspended')audio.resume();const now=audio.currentTime,osc=audio.createOscillator(),filter=audio.createBiquadFilter(),gain=audio.createGain();osc.type='sawtooth';osc.frequency.setValueAtTime(205,now);osc.frequency.exponentialRampToValueAtTime(125,now+.12);osc.frequency.setValueAtTime(158,now+.16);osc.frequency.exponentialRampToValueAtTime(82,now+.38);filter.type='lowpass';filter.frequency.value=520;gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.045,now+.025);gain.gain.exponentialRampToValueAtTime(.0001,now+.4);osc.connect(filter);filter.connect(gain);gain.connect(audio.destination);osc.start(now);osc.stop(now+.42)}catch(_error){}}
+      function openNote(index,trigger){const note=notes[index];if(!note)return;found.add(index);foundCount.textContent=found.size===6?'6 of 6 notes found — Happy Thanksgiving!':found.size+' of 6 little notes found';noteTitle.textContent=note.title;noteMessage.textContent=note.message;noteFrom.textContent=sender?'With love, '+sender:'With love, you';opener=trigger?.disabled?spinButton:trigger;if(!noteDialog.open)noteDialog.showModal();closeNote.focus();if(index===1)gobble();else chime()}
+      function reveal(){if(revealed)return;revealed=true;slice.classList.add('taken');revealButton.textContent='Slice enjoyed';revealButton.disabled=true;window.dispatchEvent(new Event('pie-slice-lifted'));openNote(0,revealButton);if(!reduced.matches)leafFlurry()}
+      revealButton.addEventListener('click',reveal);
+      spinButton.addEventListener('click',()=>{if(reduced.matches)return;turntable.classList.remove('spinning');void turntable.offsetWidth;turntable.classList.add('spinning');clearTimeout(spinTimer);spinTimer=setTimeout(()=>turntable.classList.remove('spinning'),1000);window.dispatchEvent(new Event('pie-spin-request'))});
+      document.querySelectorAll('.harvest-item').forEach(button=>button.addEventListener('click',()=>{button.classList.remove('bop');void button.offsetWidth;button.classList.add('bop');setTimeout(()=>button.classList.remove('bop'),550);openNote(Number(button.dataset.note),button)}));
+      closeNote.addEventListener('click',()=>noteDialog.close());
+      noteDialog.addEventListener('close',()=>{if(opener&&opener.isConnected)opener.focus()});
+      window.addEventListener('harvest-note',event=>openNote(Number(event.detail),document.getElementById('three-pie')));
+      soundButton.addEventListener('click',()=>{soundOn=!soundOn;soundButton.textContent=soundOn?'Sound on':'Sound off';soundButton.setAttribute('aria-pressed',String(soundOn))});
+      pieScene.addEventListener('pointermove',event=>{if(reduced.matches||event.pointerType==='touch')return;const rect=pieScene.getBoundingClientRect(),tilt=((event.clientX-rect.left)/rect.width-.5)*12;turntable.style.setProperty('--tilt',tilt.toFixed(1)+'deg')},{passive:true});
+      pieScene.addEventListener('pointerleave',()=>turntable.style.setProperty('--tilt','0deg'),{passive:true});
+      spinButton.disabled=reduced.matches;
+      reduced.addEventListener?.('change',event=>{spinButton.disabled=event.matches;if(event.matches){turntable.classList.remove('spinning');clearTimeout(spinTimer);stopLeaves()}});
+
+      const canvas=document.getElementById('leaves'),ctx=canvas.getContext('2d');let width=0,height=0,dpr=1,leaves=[],raf=0,lastTime=0;
+      const random=(min,max)=>Math.random()*(max-min)+min;
+      function resize(){dpr=Math.min(devicePixelRatio||1,2);width=innerWidth;height=innerHeight;canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);canvas.style.width=width+'px';canvas.style.height=height+'px';ctx.setTransform(dpr,0,0,dpr,0,0);if(!reduced.matches&&!raf){leaves=Array.from({length:18},()=>makeLeaf(random(0,width),random(-height,height)));raf=requestAnimationFrame(animate)}}
+      function makeLeaf(x,y){return{x,y,vx:random(-.35,.35),vy:random(.45,1.25),size:random(7,14),angle:random(0,6.28),spin:random(-.018,.018),color:['#A8442D','#CB762F','#D7A047','#78814F'][Math.floor(random(0,4))],life:0,born:0}}
+      function leafFlurry(){if(reduced.matches)return;const now=performance.now();for(let i=0;i<32;i++){const leaf=makeLeaf(random(0,width),random(-height*.5,0));leaf.born=now;leaf.life=4800;leaves.push(leaf)}if(!raf)raf=requestAnimationFrame(animate)}
+      function drawLeaf(leaf){ctx.save();ctx.translate(leaf.x,leaf.y);ctx.rotate(leaf.angle);ctx.fillStyle=leaf.color;ctx.beginPath();ctx.moveTo(0,-leaf.size);ctx.quadraticCurveTo(leaf.size*.9,-leaf.size*.55,leaf.size*.5,leaf.size*.3);ctx.quadraticCurveTo(0,leaf.size, -leaf.size*.55,leaf.size*.25);ctx.quadraticCurveTo(-leaf.size*.95,-leaf.size*.55,0,-leaf.size);ctx.fill();ctx.strokeStyle='#553725aa';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(0,-leaf.size*.75);ctx.lineTo(0,leaf.size*.65);ctx.stroke();ctx.restore()}
+      function animate(now){raf=0;if(reduced.matches){ctx.clearRect(0,0,width,height);return}const delta=Math.min(32,now-(lastTime||now));lastTime=now;ctx.clearRect(0,0,width,height);leaves=leaves.filter(leaf=>!leaf.life||now-leaf.born<leaf.life);for(const leaf of leaves){leaf.x+=leaf.vx*delta*.06;leaf.y+=leaf.vy*delta*.06;leaf.angle+=leaf.spin*delta;if(leaf.y>height+25){leaf.y=-25;leaf.x=random(0,width)}if(leaf.x<-25)leaf.x=width+20;if(leaf.x>width+25)leaf.x=-20;drawLeaf(leaf)}raf=requestAnimationFrame(animate)}
+      function stopLeaves(){if(raf)cancelAnimationFrame(raf);raf=0;leaves=[];ctx.clearRect(0,0,width,height)}
+      window.addEventListener('resize',resize,{passive:true});resize();
+    })();
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    (()=>{
+      const host=document.getElementById('pie-scene'),canvas=document.getElementById('three-pie');
+      const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+      let renderer;
+      try{renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});}
+      catch(error){console.warn('3D view unavailable; showing the CSS pie instead.',error);return;}
+      renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+      renderer.setClearColor(0x000000,0);
+      renderer.outputColorSpace=THREE.SRGBColorSpace;
+      const scene=new THREE.Scene();
+      const camera=new THREE.PerspectiveCamera(34,1,.1,100);
+      camera.position.set(4.9,6.5,7.2);camera.lookAt(0,.15,0);
+      scene.add(new THREE.HemisphereLight(0xfff3dd,0x61402b,2.1));
+      const keyLight=new THREE.DirectionalLight(0xffe4bb,3.2);keyLight.position.set(-3,7,4);scene.add(keyLight);
+      const fillLight=new THREE.DirectionalLight(0xffa951,1.1);fillLight.position.set(4,3,-4);scene.add(fillLight);
+      const feast=new THREE.Group();scene.add(feast);
+      const mat=(color,roughness=.65)=>new THREE.MeshStandardMaterial({color,roughness});
+      const plateMat=mat(0xf8f1e5,.26),rimMat=mat(0xd6c0a0,.3),crustMat=mat(0xc97437),pieTopMat=mat(0xd98137),latticeMat=mat(0xf4c77f),greenMat=mat(0x74864c),darkMat=mat(0x593522);
+      function mesh(geometry,material,parent=feast){const item=new THREE.Mesh(geometry,material);parent.add(item);return item}
+      function cylinder(rt,rb,height,material,x,y,z,segments=48,parent=feast){const item=mesh(new THREE.CylinderGeometry(rt,rb,height,segments),material,parent);item.position.set(x,y,z);return item}
+      function sphere(material,x,y,z,sx,sy,sz,parent=feast){const item=mesh(new THREE.SphereGeometry(1,20,14),material,parent);item.position.set(x,y,z);item.scale.set(sx,sy,sz);return item}
+      function tag(group,index){group.traverse(item=>{if(item.isMesh)item.userData.noteIndex=index});return group}
+      const pie=new THREE.Group();feast.add(pie);
+      const plate=cylinder(1.58,1.58,.14,plateMat,0,0,0,64);plate.userData.noteIndex=0;
+      const rim=mesh(new THREE.TorusGeometry(1.48,.035,10,64),rimMat,pie);rim.rotation.x=Math.PI/2;rim.position.y=.075;rim.userData.noteIndex=0;
+      const crust=cylinder(1.28,1.3,.27,crustMat,0,.18,0,64,pie);crust.userData.noteIndex=0;
+      const filling=cylinder(1.12,1.12,.055,pieTopMat,0,.34,0,64,pie);filling.userData.noteIndex=0;
+      const edge=mesh(new THREE.TorusGeometry(1.12,.052,8,64),latticeMat,pie);edge.rotation.x=Math.PI/2;edge.position.y=.37;edge.userData.noteIndex=0;
+      for(let i=-2;i<=2;i++){
+        const stripe=mesh(new THREE.CylinderGeometry(.027,.027,1.72,8),latticeMat,pie);stripe.position.set(i*.31,.385,0);stripe.rotation.z=Math.PI/2;stripe.userData.noteIndex=0;
+        const cross=mesh(new THREE.CylinderGeometry(.027,.027,1.72,8),latticeMat,pie);cross.position.set(0,.389,i*.31);cross.rotation.set(Math.PI/2,0,Math.PI/2);cross.userData.noteIndex=0;
+      }
+      const wedge=new THREE.Shape();wedge.moveTo(0,0);wedge.lineTo(0,-1.08);wedge.absarc(0,0,1.08,-Math.PI/2,0,false);wedge.lineTo(0,0);
+      const wedgeGeometry=new THREE.ExtrudeGeometry(wedge,{depth:.12,bevelEnabled:true,bevelThickness:.025,bevelSize:.025,bevelSegments:2,curveSegments:28});
+      const sliceGroup=new THREE.Group();pie.add(sliceGroup);sliceGroup.position.y=.37;
+      const sliceMesh=mesh(wedgeGeometry,mat(0xd98238),sliceGroup);sliceMesh.rotation.x=-Math.PI/2;sliceMesh.userData.noteIndex=0;tag(sliceGroup,0);
+      const topCrumb=sphere(latticeMat,.39,.505,-.42,.08,.025,.08,sliceGroup);topCrumb.userData.noteIndex=0;
+      tag(pie,0);
+
+      const turkey=new THREE.Group();feast.add(turkey);turkey.position.set(-1.78,.04,.72);
+      for(let i=0;i<5;i++){const feather=sphere(mat([0x9c482d,0xb95831,0xd17b39,0xa5462b,0xc56c35][i]),-.27+i*.12,.36, -.08-i*.015,.17,.3,.1,turkey);feather.rotation.z=(i-2)*-.13}
+      sphere(mat(0xc88443),0,.28,.05,.3,.35,.25,turkey);sphere(mat(0xd29350),.23,.55,.04,.19,.2,.18,turkey);
+      sphere(mat(0x26180f),.29,.59,.18,.035,.035,.025,turkey);const beak=mesh(new THREE.ConeGeometry(.085,.16,5),mat(0xe4a33c),turkey);beak.rotation.z=-Math.PI/2;beak.position.set(.4,.52,.07);
+      sphere(mat(0xb94135),.25,.43,.2,.06,.1,.045,turkey);cylinder(.035,.05,.2,mat(0x9b6429),-.08,.01,.02,turkey);
+      tag(turkey,1);
+
+      const pumpkin=new THREE.Group();feast.add(pumpkin);pumpkin.position.set(1.72,.03,.76);
+      sphere(mat(0xd98235),0,.22,0,.37,.31,.32,pumpkin);
+      for(let i=0;i<6;i++){const a=i*Math.PI/3;sphere(mat(i%2?0xc96d2f:0xe2913c),Math.cos(a)*.2,.22,Math.sin(a)*.2,.16,.29,.16,pumpkin)}
+      cylinder(.055,.075,.18,greenMat,0,.48,0,10,pumpkin);
+      tag(pumpkin,2);
+
+      const corn=new THREE.Group();feast.add(corn);corn.position.set(1.72,.03,-1.05);corn.rotation.z=-.16;
+      const cob=cylinder(.21,.17,.75,mat(0xf2ca50),0,.43,0,16,corn);cob.rotation.z=Math.PI/2;tag(corn,3);
+      for(let row=0;row<4;row++)for(let col=0;col<5;col++)sphere(mat(col%2?0xffd764:0xe9b739),-.3+col*.15,.43+(row-1.5)*.09,.16,.052,.042,.045,corn);
+      const huskA=mesh(new THREE.ConeGeometry(.22,.72,5),greenMat,corn);huskA.position.set(0,.3,-.23);huskA.rotation.x=Math.PI;const huskB=mesh(new THREE.ConeGeometry(.18,.65,5),mat(0x8c9b5b),corn);huskB.position.set(.04,.31,.22);huskB.rotation.z=.12;tag(corn,3);
+
+      const candle=new THREE.Group();feast.add(candle);candle.position.set(-1.72,.05,-1.12);
+      cylinder(.17,.19,.63,mat(0xf2e0c4),0,.34,0,24,candle);sphere(mat(0xeab74f),0,.74,0,.11,.19,.1,candle);const wick=cylinder(.018,.018,.1,darkMat,0,.65,0,8,candle);tag(candle,4);
+
+      const leaves=new THREE.Group();feast.add(leaves);leaves.position.set(.05,.06,-1.85);
+      for(let i=0;i<4;i++){const leaf=sphere(mat([0xa74c30,0xd17b37,0xd6a045,0x74824d][i]),(i-1.5)*.13,.32,Math.sin(i*1.7)*.07,.13,.025,.34,leaves);leaf.rotation.y=(i-1.5)*.4;leaf.rotation.x=-.35}
+      const stem=cylinder(.025,.025,.32,darkMat,0,.12,0,8,leaves);stem.rotation.z=-.42;tag(leaves,5);
+
+      const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();let pressed=null,dragDistance=0,spinStart=0,spinBaseY=0,sliceStart=0,lastFrame=0,raf=0;
+      function resize(){const rect=host.getBoundingClientRect();if(rect.width<1||rect.height<1)return;renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.setSize(rect.width,rect.height,false);camera.aspect=rect.width/rect.height;camera.updateProjectionMatrix();if(reduced.matches)renderer.render(scene,camera);else if(!raf)raf=requestAnimationFrame(render)}
+      const observer=new ResizeObserver(resize);observer.observe(host);resize();host.classList.add('webgl-ready');
+      function hitAt(event){const rect=canvas.getBoundingClientRect();pointer.set((event.clientX-rect.left)/rect.width*2-1,-((event.clientY-rect.top)/rect.height)*2+1);raycaster.setFromCamera(pointer,camera);return raycaster.intersectObject(feast,true).find(hit=>Number.isInteger(hit.object.userData.noteIndex))}
+      canvas.addEventListener('pointerdown',event=>{pressed={x:event.clientX,y:event.clientY};dragDistance=0;canvas.setPointerCapture(event.pointerId)});
+      canvas.addEventListener('pointermove',event=>{if(pressed){const dx=event.clientX-pressed.x,dy=event.clientY-pressed.y;dragDistance+=Math.abs(dx)+Math.abs(dy);feast.rotation.y+=dx*.009;feast.rotation.x=THREE.MathUtils.clamp(feast.rotation.x+dy*.003,-.18,.28);pressed={x:event.clientX,y:event.clientY};if(!reduced.matches&&!raf)raf=requestAnimationFrame(render)}else canvas.style.cursor=hitAt(event)?'pointer':'grab'});
+      canvas.addEventListener('pointerup',event=>{if(pressed&&dragDistance<9){const hit=hitAt(event);if(hit)window.dispatchEvent(new CustomEvent('harvest-note',{detail:hit.object.userData.noteIndex}))}pressed=null;try{canvas.releasePointerCapture(event.pointerId)}catch(_error){}});
+      canvas.addEventListener('pointercancel',()=>{pressed=null});
+      window.addEventListener('pie-slice-lifted',()=>{sliceStart=performance.now();if(!reduced.matches&&!raf)raf=requestAnimationFrame(render)});
+      window.addEventListener('pie-spin-request',()=>{spinBaseY=feast.rotation.y;spinStart=performance.now();if(!reduced.matches&&!raf)raf=requestAnimationFrame(render)});
+      function render(now=performance.now()){
+        raf=0;const elapsed=now-(lastFrame||now);lastFrame=now;
+        if(sliceStart){const p=Math.min(1,(now-sliceStart)/760),ease=1-Math.pow(1-p,3);sliceGroup.position.x=ease*.48;sliceGroup.position.y=.37+ease*.92;sliceGroup.rotation.z=ease*.16;sliceMesh.material.transparent=true;sliceMesh.material.opacity=1-ease;if(p>=1){sliceGroup.visible=false;sliceStart=0}}
+        if(spinStart){const p=Math.min(1,(now-spinStart)/980),ease=1-Math.pow(1-p,3);feast.rotation.y=spinBaseY+Math.PI*2*ease;if(p>=1)spinStart=0}
+        if(!reduced.matches&&!pressed&&now>spinStart+980)feast.position.y=Math.sin(now*.0014)*.045;
+        renderer.render(scene,camera);
+        if(!reduced.matches&&(pressed||sliceStart||spinStart||now<8000))raf=requestAnimationFrame(render);
+      }
+      render();
+      reduced.addEventListener?.('change',event=>{if(event.matches){if(raf)cancelAnimationFrame(raf);raf=0;renderer.render(scene,camera)}else if(!raf)raf=requestAnimationFrame(render)});
+    })();
+  </script>
+</body>
+</html>
