@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Send a warm Thanksgiving hello to a friend with a playful interactive harvest scene.">
+  <meta name="theme-color" content="#271c2d">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="A Thanksgiving Hello for a Friend">
+  <meta property="og:description" content="A little harvest scene and a big thank you for being a wonderful friend.">
+  <title>Thanksgiving, Friend</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 4 38 25 60 32 38 39 32 60 26 39 4 32 26 25Z' fill='%23f2bd67'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js"}}</script>
+  <style>
+    :root{color-scheme:dark;--night:#271c2d;--night2:#392637;--cream:#fff2dd;--muted:#e2cbb5;--gold:#f2bd67;--rust:#be6642;--plum:#3b2839;--sage:#9ca879;--serif:"DM Serif Display",Georgia,serif;--sans:"Karla",Arial,sans-serif}
+    *{box-sizing:border-box}[hidden]{display:none!important}
+    html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 50% -5%,#63403d 0%,var(--night2) 42%,var(--night) 100%);color:var(--cream)}
+    body{min-height:100svh;overflow-x:hidden;font-family:var(--sans)}
+    #particles{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+    .page{position:relative;z-index:1;min-height:100svh;display:flex;justify-content:center;padding:36px 16px 42px}
+    main{width:100%;max-width:560px;text-align:center}
+    .eyebrow{margin:0 0 8px;color:#e8bd7d;font-size:.72rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
+    h1{margin:0;color:var(--cream);font:400 clamp(2.35rem,9.8vw,3.7rem)/1.05 var(--serif);text-wrap:balance}
+    h1 span{color:#ffd18c}
+    .subtitle{max-width:440px;margin:10px auto 17px;color:#f0decb;font-size:1rem;line-height:1.5}
+    .scene-card{position:relative;height:clamp(275px,78vw,350px);max-width:520px;margin:0 auto 15px;overflow:hidden;border:1px solid #e9c48b77;border-radius:25px;background:radial-gradient(ellipse at 50% 90%,#94613c88,#382938 65%,#332634);box-shadow:0 18px 50px #100a1480,inset 0 1px #fff2}
+    #harvest-scene{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;pointer-events:none;touch-action:none;outline:none}
+    #harvest-scene:focus-visible{outline:3px solid var(--gold);outline-offset:-6px}
+    .scene-card.ready #harvest-scene{opacity:1;pointer-events:auto}
+    .scene-card.ready .fallback-art{display:none}
+    .fallback-art{position:absolute;inset:0;width:100%;height:100%;padding:15px}
+    .wish-card{position:relative;max-width:490px;margin:0 auto 15px;padding:19px 21px;border:1px solid #e8bd7d88;border-radius:18px;background:#fff2dd;color:#38251f;box-shadow:0 12px 32px #100a143c}
+    .wish-title{margin:0 0 7px;color:#8e452f;font:400 1.45rem/1.15 var(--serif)}
+    .wish-message{margin:0;font-size:1rem;font-weight:600;line-height:1.5;overflow-wrap:anywhere}
+    .wish-signoff{margin:10px 0 0;color:#4c6246;font:italic 400 1.1rem var(--serif)}
+    .tap-label{margin:17px 0 10px;color:#f0decb;font-size:.82rem;font-weight:700;letter-spacing:.06em}
+    .objects{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:500px;margin:0 auto 14px}
+    button{font-family:var(--sans);cursor:pointer;touch-action:manipulation}
+    .object-button{min-height:86px;padding:10px 5px 8px;border:1px solid #eccb9c8a;border-radius:17px;background:#fff2dd;color:#42291f;box-shadow:0 5px 0 #9d7054;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:transform .16s ease,background .16s ease}
+    .object-button:hover{transform:translateY(-3px);background:#fff8ee}
+    .object-button:active{transform:scale(.95)}
+    .object-button:focus-visible,.action:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+    .object-button svg{width:38px;height:38px;filter:drop-shadow(0 2px 1px #43231835)}
+    .object-button span{font-size:.75rem;font-weight:800;line-height:1.1}
+    .object-button.bop svg{animation:boop .48s cubic-bezier(.2,1.5,.4,1)}
+    @keyframes boop{35%{transform:translateY(-7px) rotate(12deg) scale(1.15)}70%{transform:translateY(1px) rotate(-5deg) scale(.98)}}
+    .toast{min-height:56px;max-width:500px;margin:0 auto 13px;padding:12px 15px;border:1px solid #ddb77f66;border-radius:14px;background:#1d1625a8;color:#fff0d7;font-size:.94rem;font-weight:600;line-height:1.4}
+    .actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}
+    .action{min-height:48px;padding:11px 17px;border:1px solid #f2bd67;border-radius:999px;background:#f2bd67;color:#33221c;font-size:.88rem;font-weight:800;box-shadow:0 4px 0 #925431;transition:transform .14s ease,background .14s ease}
+    .action:hover{background:#ffd58f}.action:active{transform:translateY(2px)}
+    .sound{min-width:118px;background:#fff2dd;border-color:#efcfaa;color:#38251f;box-shadow:0 4px 0 #b28e70}
+    .sound[aria-pressed="false"]{background:#ead7c3}
+    .footnote{margin:16px 0 0;color:#e2cbb5;font-size:.76rem}
+    @media(max-width:380px){.objects{gap:7px}.object-button{min-height:78px}.object-button svg{width:34px;height:34px}.object-button span{font-size:.69rem}.wish-card{padding:16px 15px}.scene-card{height:275px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <canvas id="particles" aria-hidden="true"></canvas>
+  <div class="page"><main>
+    <p class="eyebrow">A little Thanksgiving hello</p>
+    <h1>Happy Thanksgiving,<br><span id="to-name">friend</span>!</h1>
+    <p class="subtitle">Today’s extra cozy because the world has a friend like you in it.</p>
+    <div id="scene-card" class="scene-card">
+      <canvas id="harvest-scene" tabindex="0" role="img" aria-label="Interactive 3D harvest scene with a turkey, pumpkin, corn, and autumn leaves. Drag to turn the scene; tap an object to send a little greeting."></canvas>
+      <svg class="fallback-art" viewBox="0 0 520 350" role="img" aria-label="A cozy autumn table with a pumpkin, turkey and falling leaves">
+        <defs><radialGradient id="glow"><stop stop-color="#f2bd67" stop-opacity=".5"/><stop offset="1" stop-color="#f2bd67" stop-opacity="0"/></radialGradient><linearGradient id="pumpkin"><stop stop-color="#e99a4d"/><stop offset="1" stop-color="#a94d30"/></linearGradient></defs>
+        <circle cx="260" cy="224" r="160" fill="url(#glow)"/>
+        <ellipse cx="260" cy="290" rx="175" ry="26" fill="#7e4b36" stroke="#e9bd7a" stroke-width="3"/>
+        <path d="M255 172v92" stroke="#86543a" stroke-width="13" stroke-linecap="round"/>
+        <g fill="#d07b43" stroke="#f0bc78" stroke-width="2"><circle cx="220" cy="150" r="36"/><circle cx="260" cy="128" r="43"/><circle cx="300" cy="153" r="35"/><circle cx="237" cy="188" r="33"/><circle cx="282" cy="187" r="33"/></g>
+        <g transform="translate(130 211)"><ellipse cx="0" cy="0" rx="37" ry="28" fill="#bd7541"/><circle cx="29" cy="-24" r="18" fill="#d89b59"/><path d="M46-24 60-19 46-14Z" fill="#f0bd55"/><circle cx="34" cy="-28" r="2.5" fill="#25170f"/><g fill="#93432d"><ellipse cx="-33" cy="-31" rx="13" ry="25"/><ellipse cx="-12" cy="-39" rx="13" ry="27"/><ellipse cx="10" cy="-37" rx="13" ry="26"/></g><path d="M-10 26v12m19-12v12" stroke="#f0bd55" stroke-width="4"/></g>
+        <g fill="#d99545"><path d="M89 88q18-29 35 0-18 22-35 0Z"/><path d="M400 114q18-29 35 0-18 22-35 0Z"/><path d="M365 65q18-29 35 0-18 22-35 0Z"/></g>
+      </svg>
+    </div>
+    <section class="wish-card" aria-label="Thanksgiving wish">
+      <h2 class="wish-title">A little thing I’m grateful for</h2>
+      <p id="wish-message" class="wish-message"></p>
+      <p class="wish-signoff">With love, <span id="from-name"></span></p>
+    </section>
+    <p class="tap-label">Tap a little harvest friend to send a note</p>
+    <div class="objects" aria-label="Interactive Thanksgiving keepsakes">
+      <button class="object-button" type="button" data-object="turkey" aria-label="Tap the turkey for a greeting"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 25C5 21 7 12 12 9c1 5 4 8 8 9m0 4C13 16 18 8 24 8c-2 5 0 9 3 12m1 3c0-7 6-11 12-8-4 4-4 8-3 11" fill="#A94D30" stroke="#613522" stroke-width="2"/><ellipse cx="25" cy="31" rx="11" ry="12" fill="#C98748" stroke="#613522" stroke-width="2"/><circle cx="35" cy="21" r="7" fill="#D89A56" stroke="#613522" stroke-width="2"/><path d="m41 20 6 2-6 3" fill="#e7ae45"/><circle cx="36" cy="19" r="1.3" fill="#24170f"/></svg><span>Turkey</span></button>
+      <button class="object-button" type="button" data-object="pumpkin" aria-label="Tap the pumpkin for a greeting"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 11c-3-6 1-8 5-9" fill="none" stroke="#526B4D" stroke-width="3" stroke-linecap="round"/><path d="M24 13C14 8 7 16 8 26c0 10 7 16 16 13 9 3 16-3 16-13 1-10-6-18-16-13Z" fill="#d67c38" stroke="#874323" stroke-width="2"/><path d="M24 13c-6 7-6 18 0 26m0-26c6 7 6 18 0 26M15 13c-5 7-5 18 0 25m18-25c5 7 5 18 0 25" fill="none" stroke="#f4b765" stroke-width="2"/></svg><span>Pumpkin</span></button>
+      <button class="object-button" type="button" data-object="corn" aria-label="Tap the corn for a greeting"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 13c-5 9-3 22 7 30-2-12 0-23 4-31m11 1c5 9 3 22-7 30 2-12 0-23-4-31" fill="#72824d" stroke="#485b36" stroke-width="2"/><path d="M21 9c-6 8-6 26 3 34 9-8 9-26 3-34-2-2-4-2-6 0Z" fill="#f0c74d" stroke="#9b7223" stroke-width="2"/><path d="M20 17h8m-9 6h10m-9 6h8m-7 6h6" stroke="#d59f2e" stroke-width="2"/></svg><span>Sweet corn</span></button>
+      <button class="object-button" type="button" data-object="leaves" aria-label="Tap the leaves for a greeting"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M23 42C10 30 7 18 13 7c12 1 21 7 19 19-1 7-5 12-9 16Z" fill="#bf633a" stroke="#75361f" stroke-width="2"/><path d="M23 42 17 13m6 29 12-25m-17 15-7-2m12 5 10-5" fill="none" stroke="#f1c783" stroke-width="2" stroke-linecap="round"/></svg><span>Autumn leaf</span></button>
+    </div>
+    <div class="actions"><button id="spin-button" class="action" type="button">Turn the harvest</button><button id="sparkle-button" class="action" type="button">Send a little sparkle</button><button id="sound-button" class="action sound" type="button" aria-pressed="true">Sound on</button></div>
+    <p id="toast" class="toast" aria-live="polite" aria-atomic="true">Drag the scene to turn it, or tap a keepsake to make it say hello.</p>
+    <p class="footnote">A warm little wish, wherever your friend is.</p>
+  </main></div>
+  <script>
+    (()=>{'use strict';
+      const KEY='thanksgiving-friend.v1',DEFAULT='I’m thankful for your kindness, your laughter, and all the little ways you make life brighter.';
+      const clean=(v,n)=>String(v??'').replace(/[\u0000-\u001f\u007f-\u009f]/g,'').trim().slice(0,n).trim();let saved={to:'',from:'',msg:''};
+      try{const raw=localStorage.getItem(KEY);if(raw){const p=JSON.parse(raw);saved={to:clean(p.to,24),from:clean(p.from,24),msg:clean(p.msg,220)}}}catch(_e){}
+      const q=new URLSearchParams(location.search),toq=q.has('to')?clean(q.get('to'),24):'',fromq=q.has('from')?clean(q.get('from'),24):'',msgq=q.has('msg')?clean(q.get('msg'),220):'';
+      const to=toq||saved.to||'friend',from=fromq||saved.from||'',message=msgq||saved.msg||DEFAULT;
+      try{localStorage.setItem(KEY,JSON.stringify({to,from,msg:message}))}catch(_e){}
+      document.getElementById('to-name').textContent=to;document.getElementById('from-name').textContent=from||'a friend';document.getElementById('wish-message').textContent=to+', '+message;
+      const reduced=matchMedia('(prefers-reduced-motion: reduce)'),toast=document.getElementById('toast'),soundButton=document.getElementById('sound-button');let soundOn=true,audio=null;
+      const sayings={turkey:'Gobble hello! I’m grateful for a friend who brings good energy to every table.',pumpkin:'You make ordinary days feel warm and golden. Happy Thanksgiving!',corn:'May your holiday be full of good food and even better company.',leaves:'Our friendship is one of the little things I’m always thankful for.'};
+      const labels={turkey:'Turkey',pumpkin:'Pumpkin',corn:'Sweet corn',leaves:'Autumn leaf'};
+      function tone(frequency,start,duration,type='sine',endFrequency=frequency){if(!soundOn)return;try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;if(!audio)audio=new AC();if(audio.state==='suspended')audio.resume();const osc=audio.createOscillator(),gain=audio.createGain(),now=audio.currentTime+start;osc.type=type;osc.frequency.setValueAtTime(frequency,now);if(endFrequency!==frequency)osc.frequency.exponentialRampToValueAtTime(endFrequency,now+duration);gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.045,now+.025);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);osc.connect(gain);gain.connect(audio.destination);osc.start(now);osc.stop(now+duration+.02)}catch(_e){}}
+      function chime(){[523.25,659.25,783.99].forEach((f,i)=>tone(f,i*.14,.38))}
+      function gobble(){tone(190,0,.34,'sawtooth',85);tone(150,.13,.3,'triangle',75)}
+      function showObject(id,button=null){const message=sayings[id];if(!message)return;if(button){button.classList.remove('bop');void button.offsetWidth;button.classList.add('bop');setTimeout(()=>button.classList.remove('bop'),520)}toast.textContent=message;window.dispatchEvent(new CustomEvent('harvest-object',{detail:id}));if(id==='turkey')gobble();else chime();if(id==='leaves')leafBurst()}
+      document.querySelectorAll('[data-object]').forEach(button=>button.addEventListener('click',()=>showObject(button.dataset.object,button)));
+      window.addEventListener('harvest-object',event=>{if(sayings[event.detail])toast.textContent=sayings[event.detail]});
+      const spinButton=document.getElementById('spin-button');spinButton.disabled=reduced.matches;spinButton.addEventListener('click',()=>{window.dispatchEvent(new Event('turn-harvest'));if(!reduced.matches)leafBurst();chime();toast.textContent='A little turn of the table, just for you.'});
+      document.getElementById('sparkle-button').addEventListener('click',()=>{toast.textContent='Sending a pocketful of gratitude your way, '+to+'!';chime();leafBurst()});
+      soundButton.addEventListener('click',()=>{soundOn=!soundOn;soundButton.textContent=soundOn?'Sound on':'Sound off';soundButton.setAttribute('aria-pressed',String(soundOn))});
+      window.addEventListener('harvest-sparkle',()=>{toast.textContent='A little sparkle for a friend who deserves one.';if(!reduced.matches)leafBurst();chime()});
+      const fx=document.getElementById('particles'),ctx=fx.getContext('2d');let fw=0,fh=0,dpr=1,particles=[],frame=0;
+      const rand=(a,b)=>Math.random()*(b-a)+a;
+      function resizeFx(){dpr=Math.min(devicePixelRatio||1,2);fw=innerWidth;fh=innerHeight;fx.width=fw*dpr;fx.height=fh*dpr;fx.style.width=fw+'px';fx.style.height=fh+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
+      function leafBurst(){if(reduced.matches)return;const now=performance.now();for(let i=0;i<28;i++)particles.push({x:rand(fw*.15,fw*.85),y:rand(-20,40),vx:rand(-1.4,1.4),vy:rand(1.4,3.8),size:rand(7,13),angle:rand(0,6.28),spin:rand(-.07,.07),born:now,life:3000,color:['#c16039','#e1a64d','#9ca879','#f2bd67'][Math.floor(rand(0,4))]});if(!frame)frame=requestAnimationFrame(drawFx)}
+      function drawFx(now){frame=0;ctx.clearRect(0,0,fw,fh);particles=particles.filter(p=>now-p.born<p.life);for(const p of particles){const alpha=1-(now-p.born)/p.life;ctx.save();ctx.globalAlpha=alpha;ctx.translate(p.x,p.y);ctx.rotate(p.angle);ctx.fillStyle=p.color;ctx.beginPath();ctx.moveTo(0,-p.size);ctx.quadraticCurveTo(p.size,-p.size*.5,p.size*.45,p.size*.35);ctx.quadraticCurveTo(0,p.size,-p.size*.5,p.size*.3);ctx.quadraticCurveTo(-p.size,-p.size*.5,0,-p.size);ctx.fill();ctx.strokeStyle='#5b3828';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(0,-p.size*.7);ctx.lineTo(0,p.size*.65);ctx.stroke();ctx.restore();p.x+=p.vx;p.y+=p.vy;p.angle+=p.spin}if(particles.length)frame=requestAnimationFrame(drawFx)}
+      function stopFx(){if(frame)cancelAnimationFrame(frame);frame=0;particles=[];ctx.clearRect(0,0,fw,fh)}
+      window.addEventListener('resize',resizeFx,{passive:true});reduced.addEventListener?.('change',e=>{spinButton.disabled=e.matches;if(e.matches)stopFx()});resizeFx();
+    })();
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    (()=>{
+      const card=document.getElementById('scene-card'),canvas=document.getElementById('harvest-scene'),reduced=matchMedia('(prefers-reduced-motion: reduce)');let renderer;
+      try{renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true})}catch(error){console.warn('3D unavailable; using the illustrated fallback.',error);return}
+      renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.setClearColor(0,0);renderer.outputColorSpace=THREE.SRGBColorSpace;
+      const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(35,1,.1,60);camera.position.set(4.7,5.5,7.5);camera.lookAt(0,.55,0);
+      scene.add(new THREE.HemisphereLight(0xffe9c9,0x423044,2.2));const sun=new THREE.DirectionalLight(0xffd38f,3.3);sun.position.set(-3,7,5);scene.add(sun);const rim=new THREE.PointLight(0xf29d55,28,10);rim.position.set(3,3,-3);scene.add(rim);
+      const world=new THREE.Group();scene.add(world);const mat=(color,roughness=.65)=>new THREE.MeshStandardMaterial({color,roughness});
+      const materials={wood:mat(0x76503c),woodLight:mat(0xa46d47),leafA:mat(0xc15f39),leafB:mat(0xe0a348),leafC:mat(0x85905b),pumpkin:mat(0xd87935),turkey:mat(0xb4663d),feather:mat(0x93452e),cream:mat(0xf4ddbb),gold:mat(0xf0bb58),green:mat(0x718148),dark:mat(0x39251e),eye:mat(0x221610)};
+      function mesh(geo,material,parent=world){const m=new THREE.Mesh(geo,material);parent.add(m);return m}function ball(parent,material,pos,scale){const m=mesh(new THREE.SphereGeometry(1,18,14),material,parent);m.position.set(...pos);m.scale.set(...scale);return m}function cyl(parent,material,r1,r2,h,pos,segments=28){const m=mesh(new THREE.CylinderGeometry(r1,r2,h,segments),material,parent);m.position.set(...pos);return m}function mark(group,id){group.traverse(o=>{if(o.isMesh)o.userData.objectId=id});return group}
+      const base=cyl(world,materials.wood,1.85,1.95,.26,[0,0,0],56);const topRing=mesh(new THREE.TorusGeometry(1.72,.035,8,56),materials.gold);topRing.rotation.x=Math.PI/2;topRing.position.y=.14;
+      for(let i=0;i<8;i++){const ring=mesh(new THREE.TorusGeometry(1.53-i*.13,.008,5,56),materials.woodLight);ring.rotation.x=Math.PI/2;ring.position.y=.137+i*.001}
+      const trunk=cyl(world,materials.woodLight,.13,.23,1.05,[0,.73,-.35],18);trunk.rotation.z=-.08;
+      const tree=new THREE.Group();world.add(tree);tree.position.set(0,1.04,-.35);
+      [[0,.05,0,.54],[.23,.35,.04,.42],[-.25,.39,0,.43],[.02,.65,.03,.36],[.35,.67,-.04,.31],[-.35,.71,.04,.31],[0,.94,0,.29]].forEach((v,i)=>ball(tree,[materials.leafA,materials.leafB,materials.leafC][i%3],[v[0],v[1],v[2]],[v[3],v[3]*.88,v[3]]));mark(tree,'leaves');
+      const pumpkin=new THREE.Group();world.add(pumpkin);pumpkin.position.set(-.85,.22,.35);ball(pumpkin,materials.pumpkin,[0,0,0],[.42,.34,.38]);for(let i=0;i<6;i++){const a=i*Math.PI/3;ball(pumpkin,i%2?materials.pumpkin:materials.leafB,[Math.cos(a)*.2,0,Math.sin(a)*.2],[.18,.31,.16])}cyl(pumpkin,materials.green,.06,.08,.18,[0,.39,0],10);mark(pumpkin,'pumpkin');
+      const turkey=new THREE.Group();world.add(turkey);turkey.position.set(.8,.22,.42);
+      for(let i=0;i<5;i++){const f=ball(turkey,[materials.feather,materials.leafA,materials.woodLight][i%3],[-.25+i*.12,.28,-.1],[.14,.3,.1]);f.rotation.z=(i-2)*-.12}
+      ball(turkey,materials.turkey,[0,.18,.05],[.29,.34,.25]);ball(turkey,materials.cream,[.24,.46,.04],[.16,.17,.16]);ball(turkey,materials.eye,[.29,.49,.17],[.027,.027,.02]);const beak=mesh(new THREE.ConeGeometry(.07,.16,5),materials.gold,turkey);beak.rotation.z=-Math.PI/2;beak.position.set(.39,.44,.06);ball(turkey,materials.leafA,[.25,.32,.19],[.045,.09,.035]);cyl(turkey,materials.gold,.025,.03,.16,[-.08,-.17,.03],8);mark(turkey,'turkey');
+      const corn=new THREE.Group();world.add(corn);corn.position.set(.1,.2,1.12);corn.rotation.z=-.2;const cob=cyl(corn,materials.gold,.14,.18,.64,[0,.28,0],16);cob.rotation.z=Math.PI/2;for(let row=0;row<4;row++)for(let col=0;col<4;col++)ball(corn,materials.leafB,[-.24+col*.15,.28+(row-1.5)*.08,.12],[.045,.04,.04]);for(let i=0;i<2;i++){const husk=mesh(new THREE.ConeGeometry(.16,.6,5),materials.green,corn);husk.position.set(i?-.08:.08,.17,i?.18:-.18);husk.rotation.z=i?-.3:.3}mark(corn,'corn');
+      const candle=new THREE.Group();world.add(candle);candle.position.set(-1.13,.24,-.8);cyl(candle,materials.cream,.13,.15,.52,[0,.25,0]);ball(candle,materials.gold,[0,.62,0],[.09,.16,.09]);cyl(candle,materials.dark,.012,.012,.09,[0,.53,0],8);mark(candle,'candle');
+      const leafShapes=[];for(let i=0;i<5;i++){const shape=new THREE.Shape();shape.moveTo(0,0);shape.quadraticCurveTo(.24,-.02,.33,.25);shape.quadraticCurveTo(.28,.53,0,.72);shape.quadraticCurveTo(-.27,.5,-.31,.24);shape.quadraticCurveTo(-.2,.02,0,0);const geo=new THREE.ShapeGeometry(shape);const leaf=mesh(geo,[materials.leafA,materials.leafB,materials.leafC][i%3]);leaf.position.set(-1.2+i*.52,.17,1.4+(i%2)*.12);leaf.rotation.x=-Math.PI/2;leaf.rotation.y=i*.65;leaf.userData.objectId='leaves';leafShapes.push(leaf)}
+      const clickable=[tree,pumpkin,turkey,corn,candle,...leafShapes];
+      const ray=new THREE.Raycaster(),pointer=new THREE.Vector2();let down=null,travel=0,spinAt=0,last=0,raf=0;
+      function fit(){const r=card.getBoundingClientRect();if(r.width<1)return;renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();if(reduced.matches)renderer.render(scene,camera);else if(!raf)raf=requestAnimationFrame(draw)}
+      const observer=new ResizeObserver(fit);observer.observe(card);fit();card.classList.add('ready');
+      function hit(e){const r=canvas.getBoundingClientRect();pointer.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);ray.setFromCamera(pointer,camera);const found=ray.intersectObjects(clickable,true).find(h=>h.object.userData.objectId);return found?.object.userData.objectId}
+      canvas.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY};travel=0;canvas.setPointerCapture(e.pointerId)});
+      canvas.addEventListener('pointermove',e=>{if(down){const dx=e.clientX-down.x,dy=e.clientY-down.y;travel+=Math.abs(dx)+Math.abs(dy);world.rotation.y+=dx*.009;world.rotation.x=THREE.MathUtils.clamp(world.rotation.x+dy*.003,-.16,.22);down={x:e.clientX,y:e.clientY};if(!reduced.matches&&!raf)raf=requestAnimationFrame(draw)}else canvas.style.cursor=hit(e)?'pointer':'grab'});
+      canvas.addEventListener('pointerup',e=>{if(down&&travel<9){const id=hit(e);if(id)window.dispatchEvent(new CustomEvent('harvest-object',{detail:id}));else window.dispatchEvent(new Event('harvest-sparkle'))}down=null;try{canvas.releasePointerCapture(e.pointerId)}catch(_e){}});canvas.addEventListener('pointercancel',()=>down=null);
+      window.addEventListener('harvest-object',e=>{const target={turkey,pumpkin,corn,leaves,candle}[e.detail];if(target){target.scale.setScalar(1.18);setTimeout(()=>target.scale.setScalar(1),220);if(!reduced.matches&&!raf)raf=requestAnimationFrame(draw)}});
+      window.addEventListener('turn-harvest',()=>{spinAt=performance.now();if(!reduced.matches&&!raf)raf=requestAnimationFrame(draw)});
+      window.addEventListener('harvest-sparkle',()=>{for(const item of [materials.leafA,materials.leafB])item.emissive?.setHex?.(0x27130a)});
+      function draw(now){raf=0;const dt=Math.min(40,now-(last||now));last=now;if(!reduced.matches){world.position.y=.02+Math.sin(now*.0015)*.045;if(spinAt){const p=Math.min(1,(now-spinAt)/1100),ease=1-Math.pow(1-p,3);world.rotation.y+=(dt*.004)+(1-ease)*.12;if(p>=1)spinAt=0}}renderer.render(scene,camera);if(!reduced.matches)raf=requestAnimationFrame(draw)}
+      draw(performance.now());reduced.addEventListener?.('change',e=>{if(e.matches){if(raf)cancelAnimationFrame(raf);raf=0;renderer.render(scene,camera)}else if(!raf)raf=requestAnimationFrame(draw)});
+    })();
+  </script>
+</body>
+</html>
